@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Invoice</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Invoice</h1>
+    <p><strong>Invoice ID:</strong> {{ bill.id }}</p>
+    <p><strong>Patient:</strong> {{ appointment.patient.patient_name }}</p>
+    <p><strong>Patient ID:</strong> {{ appointment.patient.patient_id }}</p>
+    <p><strong>Doctor:</strong> {{ appointment.doctor.doc_name }}</p>
+    <p><strong>Date & Time :</strong> {{ appointment.date_of_appointment }} , {{ appointment.time_of_appointment }}</p>
+
+    <table>
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+        <tr>
+            <td>Consultation Fee</td>
+            <td>Rs.{{ bill.consultation_fee }}</td>
+        </tr>
+    </table>
+
+    <p><strong>Payment Method:</strong> {{ bill.get_payment_method_display }}</p>
+    <p><strong>Status:</strong> Paid</p>
+</body>
+</html>

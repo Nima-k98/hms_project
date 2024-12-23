@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Medis-Appointment</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+
+  <!-- =======================================================
+  * Template Name: Medicio
+  * Template URL: https://bootstrapmade.com/medicio-free-bootstrap-theme/
+  * Updated: Aug 07 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="starter-page-page">
+
+   <header id="header" class="header sticky-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="d-none d-md-flex align-items-center">
+          <i class="bi bi-clock me-1"></i> Monday - Saturday, 8AM to 10PM
+        </div>
+        <div class="d-flex align-items-center">
+           <i class="bi bi-envelope me-2"></i> Email us info@medisoffical.com
+          <i class="me-3"></i>
+          <i class="bi bi-phone me-1"></i>Call us now +91 9865476576
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-center">
+
+      <div class="container position-relative d-flex align-items-center justify-content-end">
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+          <img src="{% static 'img/logo.jpg' %}" alt="Logo" style="height: 100px; width: 70px;">
+          <!-- Uncomment the line below if you also wish to use a text logo -->
+           <h1 class="sitename">Medis</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="#hero" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#departments">Departments</a></li>
+            <li><a href="#doctors">Doctors</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        {% if user.is_authenticated %}
+    {% if user.user_type == "1" %}
+        <a class="cta-btn" href="{% url 'login' %}">Login</a>
+    {% elif user.user_type == "2" %}
+        <a class="cta-btn" href="{% url 'login' %}">Login</a>
+    {% elif user.user_type == "3" %}
+        <a class="cta-btn" href="{% url 'logout' %}">Logout</a>
+        <div class="patient-info d-flex flex-column align-items-center" style="margin-left: 20px;">
+            <img src="{{ patient_details.patient_pic.url }}" alt="Profile Picture" class="profile-pic" style="height: 30px; width: 30px; border-radius: 50%; margin-bottom: 5px;">
+            <span style="font-size: 10px;">{{ patient_details.patient_name }}</span>
+        </div>
+    {% endif %}
+{% else %}
+    <a class="cta-btn" href="{% url 'login' %}">Login</a>
+{% endif %}
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1 class="heading-title">Make an appointment</h1>
+              <p class="mb-0">
+                Schedule your visit with our expert medical team. We offer flexible scheduling options, including same-day appointments for urgent care needs, ensuring you receive timely and professional medical attention.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="home.html">Home</a></li>
+            <li class="current">Appointment</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+
+     <!-- Appointment Section -->
+    <section id="appointment" class="appointment section light-background">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>APPOINTMENT</h2>
+        <p></p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <form id="appointmentForm" action="{% url 'make_appointment' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" value="{{ patient_details.patient_name }}" required>
+                </div>
+                <div class="col-md-4 form-group mt-3 mt-md-0">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" value="{{ patient_details.email }}" required>
+                </div>
+                <div class="col-md-4 form-group mt-3 mt-md-0">
+                    <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" value="{{ patient_details.mobile_number }}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group mt-4">
+            <select name="department" id="department" class="form-select" required>
+                <option value="">Select Department</option>
+                {% for dept in departments %}
+                    <option value="{{ dept.id }}">{{ dept.dpt_name }}</option>
+                {% empty %}
+                    <p>No departments available</p>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4 form-group mt-4">
+            <select name="doctor" id="doctor" class="form-select" required>
+                <option value="">Select Doctor</option>
+                <!-- Doctors will be dynamically loaded here -->
+                {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">Dr. {{ doctor.doc_name }}</option>
+                {% empty %}
+                    <option value="">No doctors available</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+            <!-- Doctor Details and Availability Section (Dynamically Loaded) -->
+            <div id="doctor-details" class="doctor-details mt-4">
+                <div id="doctor-info">
+                    <!-- Doctor information will be populated here -->
+                </div>
+                <div id="doctor-availability">
+                    <!-- Doctor availability will be populated here -->
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-md-4 form-group mt-4">
+                    <input type="date" name="appointment_date" class="form-control" id="date" required>
+                </div>
+            <div class="col-md-4 form-group mt-4">
+        <input type="text" name="appointment_time" class="form-control" id="appointment_time"
+               placeholder="HH:MM AM/PM" required>
+        <small id="time_hint" class="form-text text-muted">Enter time in 12-hour format (e.g., 02:30 PM)</small>
+    </div>
+            <div class="form-group mt-3">
+                <textarea class="form-control" name="message" rows="5" placeholder="Reason (Optional)"></textarea>
+            </div>
+            </div>
+            <div class="text-center mt-3">
+                <button type="submit" class="appointment-btn" style="
+                    padding: 15px 40px;
+                    font-size: 18px;
+                    border-radius: 50px;
+                    border: none;
+                    background: #3fbbc0;
+                    color: #fff;
+                    font-weight: 600;
+                    box-shadow: 0 4px 15px rgba(25, 119, 204, 0.2);
+                    transition: all 0.3s ease;
+                    cursor: pointer;">Make an Appointment</button>
+            </div>
+        </form>
+
+      </div>
+
+    </section><!-- /Appointment Section -->
+  </main>
+  <footer id="footer" class="footer light-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">Medis</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Kuttisahib Road Cheranelloor,</p>
+            <p>South Chittoor Kochi, Kerala, 682027</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+91 9865476576</span></p>
+            <p><strong>Email:</strong> <span>info@medisoffical.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Hic solutasetp</h4>
+          <ul>
+            <li><a href="#">Molestiae accusamus iure</a></li>
+            <li><a href="#">Excepturi dignissimos</a></li>
+            <li><a href="#">Suscipit distinctio</a></li>
+            <li><a href="#">Dilecta</a></li>
+            <li><a href="#">Sit quas consectetur</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nobis illum</h4>
+          <ul>
+            <li><a href="#">Ipsam</a></li>
+            <li><a href="#">Laudantium dolorum</a></li>
+            <li><a href="#">Dinera</a></li>
+            <li><a href="#">Trodelas</a></li>
+            <li><a href="#">Flexo</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Medis</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact forms: [buy-url] -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+<script>
+    document.getElementById('department').addEventListener('change', function() {
+        var departmentId = this.value;
+
+        if (departmentId) {
+            // Send AJAX request to get doctors for the selected department
+            fetch(`/get-doctors/?department_id=${departmentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var doctorSelect = document.getElementById('doctor');
+                    doctorSelect.innerHTML = '<option value="">Select Doctor</option>';  // Reset doctor options
+
+                    data.doctors.forEach(function(doctor) {
+                        var option = document.createElement('option');
+                        option.value = doctor.id;
+                        option.textContent = doctor.name;
+                        doctorSelect.appendChild(option);
+                    });
+                });
+        } else {
+            document.getElementById('doctor').innerHTML = '<option value="">Select Doctor</option>';
+        }
+    });
+
+    document.getElementById('doctor').addEventListener('change', function() {
+        var doctorId = this.value;
+
+        if (doctorId) {
+            // Send AJAX request to get doctor details and availability
+            fetch(`/get-doctor-details/?doctor_id=${doctorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display doctor details
+                    var doctorInfo = document.getElementById('doctor-info');
+                    doctorInfo.innerHTML = `
+                        <h3>Dr. ${data.doctor.name}</h3>
+                        <p><strong>Specialization:</strong> ${data.doctor.specialization}</p>
+                        <p><strong>Qualification:</strong> ${data.doctor.qualification}</p>
+                    `;
+
+                    // Display doctor availability
+                    var availabilityInfo = document.getElementById('doctor-availability');
+                    availabilityInfo.innerHTML = '<h4>Availability:</h4>';
+
+                    data.availability.forEach(function(slot) {
+                        availabilityInfo.innerHTML += `
+                            <p>${slot.day}: ${convertTo12HourFormat(slot.start_time)} - ${convertTo12HourFormat(slot.end_time)}</p>
+                        `;
+                    });
+                });
+        } else {
+            // Reset doctor details and availability
+            document.getElementById('doctor-info').innerHTML = '';
+            document.getElementById('doctor-availability').innerHTML = '';
+        }
+    });
+
+    document.getElementById("appointment_time").addEventListener("input", function (event) {
+        const input = this.value.toUpperCase().trim(); // Convert to uppercase and remove extra spaces
+        const regex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/; // Regex for 12-hour format with AM/PM
+
+        if (regex.test(input)) {
+            this.setCustomValidity(""); // Valid input
+        } else {
+            this.setCustomValidity("Invalid time format. Use HH:MM AM/PM."); // Show error
+        }
+    });
+
+    document.getElementById("appointment_time").addEventListener("blur", function (event) {
+        const input = this.value.toUpperCase().trim();
+        const regex = /^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/;
+        if (!regex.test(input)) {
+            alert("Please enter the time in the correct format (e.g., 02:30 PM).");
+        }
+    });
+
+    // Function to convert time from 24-hour format to 12-hour format with AM/PM
+    function convertTo12HourFormat(time) {
+        let [hours, minutes] = time.split(':');
+        hours = parseInt(hours);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // The hour '0' should be '12'
+        minutes = minutes.padStart(2, '0'); // Ensure minutes are two digits
+        return `${hours}:${minutes} ${ampm}`;
+    }
+</script>
+
+</body>
+</html>

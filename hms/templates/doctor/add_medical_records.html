@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medical Record</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Medical Record for {{ patient.patient_name }}</h1>
+
+        <!-- Medical Record Form -->
+        <form method="POST" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+
+            <!-- Diagnosis -->
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis</label>
+                <textarea id="diagnosis" name="diagnosis" placeholder="Enter diagnosis"></textarea>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" placeholder="Enter description"></textarea>
+            </div>
+
+            <!-- Prescription -->
+            <div class="form-group">
+                <label for="prescription">Prescription</label>
+                <textarea id="prescription" name="prescription" rows="4" placeholder="Enter prescription"></textarea>
+            </div>
+
+            <!-- Document Upload -->
+            <div class="form-group">
+                <label for="report_files">Document</label>
+                <input type="file" id="report_files" name="report_files" accept="image/*,application/pdf" multiple>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Save Record</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% if messages %}
+        <script type="text/javascript">
+            window.onload = function() {
+                setTimeout(function() {
+                    {% for message in messages %}
+                        alert("{{ message }}");
+                    {% endfor %}
+                }, 100);
+            };
+        </script>
+    {% endif %}
+</body>
+</html>

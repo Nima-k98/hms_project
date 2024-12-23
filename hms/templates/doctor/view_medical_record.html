@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Record Details</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Medical Record Details for {{ patient.patient_name }}</h1>
+
+        <div class="details">
+            {% if medical_record.diagnosis %}
+                <p><strong>Diagnosis:</strong> {{ medical_record.diagnosis }}</p>
+            {% endif %}
+
+            {% if medical_record.description %}
+                <p><strong>Description:</strong> {{ medical_record.description }}</p>
+            {% endif %}
+
+            {% if medical_record.prescription %}
+                <p><strong>Prescription:</strong> {{ medical_record.prescription }}</p>
+            {% endif %}
+
+            {% if doctor %}
+                <p><strong>Doctor:</strong> Dr. {{ doctor.doc_name }}</p>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'generate_prescription_pdf' medical_record.id %}" class="btn primary">Download Prescription PDF</a>
+        </div>
+
+        <br>
+        {% if request.user.user_type == "2" %}  <!-- Doctor -->
+            <a href="{% url 'doctor_home' %}" class="btn secondary">Back to Doctor Home</a>
+        {% elif request.user.user_type == "1" %}  <!-- Admin -->
+            <a href="{% url 'admin_home' %}" class="btn secondary">Back to Admin Home</a>
+        {% endif %}
+    </div>
+</body>
+</html>

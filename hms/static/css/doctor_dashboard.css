@@ -1,0 +1,229 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f9fa; /* Light Gray */
+  color: #333333; /* Dark Gray */
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  height: 100vh; /* Ensure the dashboard takes full height */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #004d4d; /* Darker Teal */
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Full height sidebar */
+}
+
+/* Sidebar Profile */
+.sidebar-header .profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-header .profile img {
+  width: 100px;  /* Ensure a fixed size for the profile picture */
+  height: 100px;
+  border-radius: 50%; /* Makes the profile image circular */
+  object-fit: cover; /* Ensures the image fits properly inside the circle */
+  margin-bottom: 10px;
+}
+
+.sidebar-header .profile h3  {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+
+
+.sidebar-header .profile p {
+  font-size: 0.75em;
+  margin-bottom: 5px;
+}
+
+/* Sidebar Menu */
+.sidebar ul {
+  list-style: none;
+  margin-bottom: auto;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.sidebar ul li a:hover {
+  background-color: #003333; /* Darker shade on hover */
+}
+
+.sidebar-divider {
+  border: none;
+  border-top: 1px solid #fff; /* Dark line for the divider */
+  margin: 5px 0;
+}
+
+/* Logout Link */
+.logout a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #005757; /* Dark but not red */
+  margin-top: 20px;
+}
+
+.logout a:hover {
+  background-color: #003333; /* Darker shade on hover */
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 1.5em;
+}
+
+.header .profile {
+  display: flex;
+  align-items: center;
+}
+
+.header .profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Stats Section */
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  padding: 20px;
+  background-color: #006666; /* Dark Teal for section cards */
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.2em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none; /* Prevent underline on hover */
+}
+
+/* Appointments Table */
+.appointments table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.appointments table th,
+.appointments table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.appointments table th {
+  background-color: #004d4d; /* Darker Teal */
+  color: #fff;
+}
+
+.appointments table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.appointments table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.appointments button {
+  background-color: #005757; /* Teal */
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.appointments button:hover {
+  background-color: #003333; /* Darker hover */
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.search-input::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+.search-input:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+@media (max-width: 600px) {
+    .search-input {
+        width: 90%;
+    }
+}
+

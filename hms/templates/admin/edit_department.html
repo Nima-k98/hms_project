@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Department</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Department</h1>
+        <form method="POST" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+
+            <!-- Department Name -->
+            <div class="form-group">
+                <label for="dpt_name">Department Name:</label>
+                <input type="text" id="dpt_name" name="dpt_name" value="{{ forms.dpt_name.value }}" required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="desc">Description:</label>
+                <textarea id="desc" name="desc" required>{{ forms.desc.value }}</textarea>
+            </div>
+
+            <!-- Department Image -->
+            <div class="form-group">
+                <label for="depart_pic">Department Image:</label>
+                <input type="file" id="depart_pic" name="depart_pic" accept="image/*">
+                {% if forms.depart_pic.value %}
+                <div class="image-preview">
+                    <img src="{{ forms.depart_pic.value.url }}" alt="Current Department Image">
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Save Changes</button>
+                <a href="{% url 'admin_home' %}" class="btn secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/doctor_dashboard.css' %}">
+   <style>
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="profile">
+          <img
+        src="{% if doctor_details.doc_pic %}{{ doctor_details.doc_pic.url }}{% else %}{% static 'img/profile.png' %}{% endif %}"
+        alt="{{ doctor_details.doc_name }}"
+        class="doctor-img">
+          <h3>Dr. {{ doctor_details.doc_name }}</h3>
+          <p>{{ doctor_details.qualification }}</p>
+          <p>Department: {{ doctor_details.department }}</p>
+          <p>Email: {{ doctor_details.email }}</p>
+          <p>Mobile: {{ doctor_details.mobile_number }}</p>
+        </div>
+      </div>
+      <hr class="sidebar-divider">
+      <ul class="sidebar-menu">
+        <li><a href="#" onclick="showSection('appointments-section')">Appointments</a></li>
+        <li><a href="#" onclick="showSection('patients-section')">Patients</a></li>
+<!--        <li><a href="#">Reports</a></li>-->
+      </ul>
+      <div class="logout">
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <h1>Welcome, Dr. {{ doctor_details.doc_name }}</h1>
+      </header>
+
+      <!-- Quick Stats -->
+      <section class="stats">
+        <div class="card">Appointments: <strong>{{ appointments.count }}</strong></div>
+        <div class="card">Patients: <strong>{{ patients_count }}</strong></div>
+      </section>
+
+      <!-- Appointments Table -->
+      <section class="appointments">
+        <h2>Today's Appointments</h2>
+        <br>
+            <!-- Search Bar -->
+           <input type="text" id="search-input" class="search-input"  placeholder="Search by Patient Name,Patient Id" onkeyup="searchTodayAppointments()">
+
+        <table id="today-appointments-table" class="today-appointments-table">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Patient Name</th>
+              <th>Date & Time</th>
+              <th>Purpose</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appointment in appointments_today %}
+              <tr>
+                <td>{{ appointment.patient.patient_id}}</td>
+                <td>{{ appointment.patient.patient_name }}</td>
+                <td>{{ appointment.date_of_appointment }} , {{ appointment.time_of_appointment }}</td> <!-- Format the time to 12-hour format -->
+                <td>{{ appointment.reason }}</td>
+                <td><a href="{% url 'complete_appointment' appointment.id %}">
+                                <button>Complete</button>
+                            </a>
+                    {{ appointment.status|upper }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="4">No appointments for today.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+      <br><br>
+
+        <section class="appointments">
+      <div id="appointments-section" class="content-section">
+                <h2>Appointments</h2>
+          <br>
+            <!-- Search Bar -->
+           <input type="text" id="search-input1" class="search-input"  placeholder="Search by Patient Name,Patient Id" onkeyup="searchAppointments()">
+
+                <table id="all-appointments-table" class="all-appointments-table">
+
+                    <thead>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Patient Name</th>
+                            <th>Date & Time</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.patient.patient_id }}</td>
+                            <td>{{ appointment.patient.patient_name }}</td>
+                            <td>{{ appointment.date_of_appointment }} , {{ appointment.time_of_appointment }}</td>
+                            <td>{{ appointment.reason }}</td>
+                            <td>
+                             {% if appointment.status != "confirmed" %}
+                                {{ appointment.status|upper }}
+                              {% else %}
+                                {{ appointment.status|upper }}
+                                <a href="{% url 'complete_appointment' appointment.id %}">
+                                <button>Complete</button>
+                               </a>
+                             {% endif %}
+                              </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">No appointments for today.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </section>
+
+            <!-- Patients Section -->
+           <section class="appointments">
+            <div id="patients-section" class="content-section">
+                <h2>Patients</h2>
+                <br>
+            <!-- Search Bar -->
+           <input type="text" id="search-input2" class="search-input"  placeholder="Search by Patient Name,Patient Id" onkeyup="searchPatients()">
+
+                <table id ="patients-table" class="patients-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ patient.patient_id }}</td>
+                            <td>{{ patient.patient_name }}</td>
+                            <td>{{ patient.gender }}</td>
+                             <td>{{ patient.age }}</td>
+<!--                       <td>-->
+<!--                        {% if patient.confirmed_appointment %}-->
+<!--                            &lt;!&ndash; Show buttons if the patient has a confirmed appointment &ndash;&gt;-->
+<!--                            <button>View Details</button>-->
+<!--                            <button>Add Records</button>-->
+<!--                        {% else %}-->
+<!--                            Not Confirmed-->
+<!--                        {% endif %}-->
+                            <td>
+                            <a href="{% url 'patient_details' patient.id %}" class="btn primary">
+                                <button>View Details</button></a>
+                            <a href="{% url 'add_medical_record' patient.id %}">
+                            <button>Add Records</button>
+                        </a>
+                           </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">No patients found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+           </section>
+
+            <!-- Reports Section -->
+            <div id="reports-section" class="content-section">
+                <h2>Reports</h2>
+                <p>Feature under construction.</p>
+            </div>
+        </main>
+    </div>
+<script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
+  {% if messages %}
+    <script type="text/javascript">
+        window.onload = function() {
+            setTimeout(function() {
+                {% for message in messages %}
+                    alert("{{ message }}");
+                {% endfor %}
+            }, 100);
+        };
+    </script>
+  {% endif %}
+  <script>
+ function searchTodayAppointments() {
+        var input = document.getElementById("search-input");
+        var filter = input.value.toLowerCase();
+
+        var table = document.querySelector(".today-appointments-table");
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var patientName = cells[1].textContent.toLowerCase();
+             var patientId = cells[0].textContent.toLowerCase();
+
+            if (patientName.includes(filter) || patientId.includes(filter)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+      function searchAppointments() {
+        var input = document.getElementById("search-input1");
+        var filter = input.value.toLowerCase();
+
+        var table = document.querySelector(".all-appointments-table");
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var patientName = cells[1].textContent.toLowerCase();
+             var patientId = cells[0].textContent.toLowerCase();
+
+            if (patientName.includes(filter) || patientId.includes(filter)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+      function searchPatients() {
+        var input = document.getElementById("search-input2");
+        var filter = input.value.toLowerCase();
+
+        var table = document.querySelector(".patients-table");
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var patientName = cells[2].textContent.toLowerCase();
+             var patientId = cells[1].textContent.toLowerCase();
+
+            if (patientName.includes(filter) || patientId.includes(filter)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+       </script>
+</body>
+</html>

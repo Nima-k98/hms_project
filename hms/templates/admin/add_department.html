@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ form.instance.pk|default:"Add Department" }}</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ form.instance.pk|default:"Add Department" }}</h1>
+        <form method="POST" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+
+            <!-- Form Fields -->
+            <div class="form-group">
+                <label for="dpt_name">Department Name</label>
+                <input type="text" id="dpt_name" name="dpt_name" value="" required>
+            </div>
+
+            <div class="form-group">
+                <label for="desc">Description</label>
+                <textarea id="desc" name="desc" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="depart_pic">Department Image</label>
+                <input type="file" id="depart_pic" name="depart_pic" accept="image/*" required>
+                {% if form.instance.depart_pic %}
+                <div class="image-preview">
+                    <img src="{{ form.instance.depart_pic.url }}" alt="Current Image">
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Save</button>
+                <a href="{% url 'admin_home' %}" class="btn secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

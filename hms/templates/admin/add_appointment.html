@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Appointment</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Appointment</h1>
+
+        <!-- Appointment Form -->
+        <form method="POST" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+
+            <!-- Department -->
+            <div class="form-group">
+                <label for="department">Department</label>
+                <select id="department" name="department" required>
+                    <option value="">Select Department</option>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}" {% if department.id == form.department.value %} selected {% endif %}>{{ department.dpt_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+             <!-- Doctor -->
+            <div class="form-group">
+                <label for="doctor">Doctor</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="">Select Doctor</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">Dr. {{ doctor.doc_name }}</option>
+                {% empty %}
+                    <option value="">No doctors available</option>
+                {% endfor %}
+                </select>
+            </div>
+
+            <!-- Patient -->
+            <div class="form-group">
+                <label for="patient">Patient</label>
+                <select id="patient" name="patient" required>
+                    <option value="">Select Patient</option>
+                    {% for patient in patients %}
+                        <option value="{{ patient.id }}" {% if patient.id == form.patient.value %} selected {% endif %}>{{ patient.patient_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date of Appointment -->
+            <div class="form-group">
+                <label for="date_of_appointment">Date of Appointment</label>
+                <input type="date" id="date_of_appointment" name="date_of_appointment" value="{{ form.date_of_appointment.value }}" required>
+            </div>
+
+            <!-- Time of Appointment -->
+            <div class="form-group">
+                <label for="time_of_appointment">Time of Appointment</label>
+                <input type="time" id="time_of_appointment" name="time_of_appointment" value="{{ form.time_of_appointment.value }}" required>
+            </div>
+
+
+            <!-- Reason -->
+            <div class="form-group">
+                <label for="reason">Reason</label>
+                <textarea id="reason" name="reason" rows="3" ></textarea>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Add Appointment</button>
+                <a href="{% url 'admin_home' %}" class="btn secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript">
+        // Listen for changes in the department select box
+         document.getElementById('department').addEventListener('change', function() {
+        var departmentId = this.value;
+
+        if (departmentId) {
+            // Send AJAX request to get doctors for the selected department
+            fetch(`/get-doctors/?department_id=${departmentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var doctorSelect = document.getElementById('doctor');
+                    doctorSelect.innerHTML = '<option value="">Select Doctor</option>';  // Reset doctor options
+
+                    data.doctors.forEach(function(doctor) {
+                        var option = document.createElement('option');
+                        option.value = doctor.id;
+                        option.textContent = doctor.name;
+                        doctorSelect.appendChild(option);
+                    });
+                });
+        } else {
+
+        document.getElementById('doctor').innerHTML = '<option value="">Select Doctor</option>';
+    }
+});
+
+    </script>
+
+    {% if messages %}
+        <script type="text/javascript">
+            window.onload = function() {
+                setTimeout(function() {
+                    {% for message in messages %}
+                        alert("{{ message }}");
+                    {% endfor %}
+                }, 100);
+            };
+        </script>
+    {% endif %}
+</body>
+</html>

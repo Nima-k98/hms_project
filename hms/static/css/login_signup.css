@@ -1,0 +1,193 @@
+/* Resetting margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Setting a background image for the entire body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('/static/img/login.jpg'); /* Use a relative path starting from /static */
+    background-size: cover;
+    background-attachment: fixed;
+    min-height : 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40%;
+}
+
+/* Form Box styling */
+.form-box {
+    background: rgba(255, 255, 255, 0.7); /* Transparent background */
+    padding: 40px;
+    border-radius: 45px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Default width for login form */
+}
+
+/* When form type is signup, increase the form box width */
+.container.doctor-signup-active .form-box {
+    width: 390px; /* Adjust the width for the doctor signup form */
+}
+
+.container.signup-active .form-box {
+    width: 390px; /* Width for normal signup */
+}
+
+.site-name {
+    font-size: 20px;
+    color: #333;
+}
+
+/* Heading styling */
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 25px;
+    color: #333;
+}
+
+h4 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #807d7d;
+}
+
+
+/* Input fields styling */
+.input-box {
+    margin-bottom: 20px;
+}
+
+.input-box label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.input-box input, .input-box select, .input-box textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Form row for horizontally aligned inputs (like email and mobile number) */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-row .input-box {
+    width: 48%; /* Ensures two fields fit horizontally */
+}
+
+.form-row .input-box input, .form-row .input-box select {
+    width: 100%;
+}
+
+.container.signup-active .form-box {
+    width: 450px; /* Increased width for signup case */
+}
+
+.icon-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #fff;
+}
+
+/* Prefix Icon */
+.icon-input .icon {
+    color: #cf0c0c;
+    font-size: 16px;
+    margin: 10px;
+}
+.icon-input i {
+    color: #8a8686;
+    margin-right: 10px;
+}
+
+/* Input field styling */
+.icon-input input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    padding: 5px;
+    color: #333;
+}
+/* Button styling */
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #3fbbc0;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #3fbbc0;
+}
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0; /* Adds spacing above and below the divider */
+    color: #666; /* Text color for OR */
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc; /* Line color */
+    margin: 0 10px; /* Spacing around OR text */
+}
+
+.divider span {
+    font-size: 0.9rem; /* Adjust text size for OR */
+    padding: 0 5px;
+}
+
+/* Forgot Password and Signup Link */
+.forgot-password, .switch-link {
+    text-align: center;
+    font-size: 16px;
+    margin: 10px;
+}
+
+.forgot-password {
+    text-align: right; /* Align the "Forgot Password?" link to the right */
+}
+
+.forgot-password a, .switch-link a {
+    color: #3fbbc0;
+    text-decoration: none;
+}
+
+.forgot-password a:hover, .switch-link a:hover {
+    text-decoration: underline;
+}

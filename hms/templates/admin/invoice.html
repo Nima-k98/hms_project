@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation Invoice</title>
+    <link rel="stylesheet" href="{% static 'admin_dashboard.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .invoice-container {
+            width: 80%;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+        strong {
+            font-weight: bold;
+            color: #333;
+        }
+        .payment-options {
+            margin-top: 20px;
+        }
+        .payment-options label {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .payment-options input {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 30%;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .invoice-details {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 5px solid #28a745;
+        }
+        .invoice-details p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <h1>Consultation Invoice</h1>
+
+        <div class="invoice-details">
+            <p><strong>Appointment ID:</strong> {{ appointment.id }}</p>
+            <p><strong>Patient Name:</strong> {{ appointment.patient.patient_name }}</p>
+            <p><strong>Doctor Name:</strong> {{ appointment.doctor.doc_name }}</p>
+            <p><strong>Date:</strong> {{ appointment.date_of_appointment }}</p>
+            <p><strong>Time:</strong> {{ appointment.time_of_appointment }}</p>
+            <p><strong>Status:</strong> {{ appointment.status }}</p>
+            <p><strong>Consultation Fee:</strong> ₹{{ consultation_fee }}</p>
+        </div>
+
+        <h2>Payment Options</h2>
+        <form action="{% url 'process_payment' appointment.id %}" method="post">
+            {% csrf_token %}
+            <div class="payment-options">
+                <label>
+                    <input type="radio" name="payment_method" value="card" required> Credit/Debit Card
+                </label>
+                <label>
+                    <input type="radio" name="payment_method" value="upi" required> UPI
+                </label>
+                <label>
+                    <input type="radio" name="payment_method" value="cash" required> Cash
+                </label>
+            </div>
+            <button type="submit">Proceed</button>
+        </form>
+    </div>
+</body>
+</html>

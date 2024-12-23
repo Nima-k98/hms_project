@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medis</title>
+    <link rel="stylesheet" href="{% static 'css/login_signup.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<br>
+    <div class="container {% if form_type == 'signup' %}signup-active{% endif %}">
+        <div class="form-box">
+            <h2 id="form-title">
+                {% if form_type == 'login' %}
+                    Welcome Back!
+                {% elif form_type == 'doctor-signup' %}
+                    Doctor Sign Up
+                {% else %}
+                    Sign Up
+                {% endif %}
+            </h2>
+            <h4 id="form-sub-title">
+                {% if form_type == 'login' %}
+                    Please Enter Your Details
+                {% elif form_type == 'doctor-signup' %}
+                    Register as a Doctor
+                {% else %}
+                    Create a New Account
+                {% endif %}
+            </h4>
+
+            <!-- Login Form -->
+            {% if form_type == 'login' %}
+            <form id="login-form" class="form" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="input-box">
+                    <div class="icon-input">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <div class="icon-input">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button type="submit">LOGIN</button>
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                <div class="switch-link">
+                    <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+                </div>
+            </form>
+            {% endif %}
+
+            <!-- Signup Form -->
+            {% if form_type == 'signup' %}
+            <form id="signup-form" class="form" method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="input-box">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="new-email">Email</label>
+                        <input type="email" id="new-email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-box">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" name="mobile" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                <div class="input-box">
+                   <label for="dob">Date of Birth</label>
+                   <input type="date" id="dob" name="dob" max="2024-12-31" required>
+                </div>
+                <div class="input-box">
+                    <label for="profile-pic">Profile Picture</label>
+                    <input type="file" id="profile-pic" name="profile_pic">
+                </div>
+                </div>
+                <div class="input-box">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="input-box">
+                        <label for="new-password">Password</label>
+                        <input type="password" id="new-password" name="password" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                </div>
+                <button type="submit">Sign Up</button>
+                <br>
+                <br>
+                 <div class="switch-link">
+                    <p>Are you a doctor ? <a href="{% url 'doctor_signup' %}"> Sign up as a Doctor</a></p>
+                </div>
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                <div class="switch-link">
+                    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                </div>
+            </form>
+            {% endif %}
+
+            <!-- Doctor Sign Up Form -->
+            {% if form_type == 'doctor-signup' %}
+            <form id="doctor-signup-form" class="form" method="POST" action="{% url 'doctor_signup' %}" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div class="input-box">
+                    <label for="name">Name</label>
+                    <input type="text" id="dname" name="name" required>
+                </div>
+                <div class="form-row">
+                  <div class="input-box">
+                    <label for="email">Email</label>
+                    <input type="email" id="demail" name="email" required>
+                  </div>
+                    <div class="input-box">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="dmobile" name="mobile" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                <div class="input-box">
+                    <label for="specialization">Specialization</label>
+                    <input type="text" id="specialization" name="specialization" required>
+                </div>
+                    <div class="input-box">
+                    <label for="qualification">Qualification</label>
+                    <input type="text" id="qualification" name="qualification" required>
+                </div>
+                </div>
+                <div class="input-box">
+                    <label for="department">Department</label>
+                    <select id="department" name="department" required>
+                        {% for dept in departments %}
+                            <option value="{{ dept.id }}">{{dept.dpt_name}}</option>
+                        {% empty %}
+                             <p> No departments available </p>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label for="profile-pic">Profile Picture</label>
+                    <input type="file" id="profile-pic-doc" name="profile_pic">
+                </div>
+                <div class="form-row">
+                    <div class="input-box">
+                        <label for="password">Password</label>
+                        <input type="password" id="dpassword" name="password" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="dconfirm-password" name="confirm-password" required>
+                    </div>
+                </div>
+                <button type="submit">Sign Up</button>
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                <div class="switch-link">
+                    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                </div>
+                 </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

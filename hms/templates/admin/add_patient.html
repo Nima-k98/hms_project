@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Patient</h1>
+
+        <!-- Patient Form -->
+        <form method="POST" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="patient_name">Name</label>
+                <input type="text" id="patient_name" name="patient_name" value="" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="" required>
+            </div>
+
+            <!-- Mobile Number -->
+            <div class="form-group">
+                <label for="mobile_number">Mobile Number</label>
+                <input type="tel" id="mobile_number" name="mobile_number" value="" required>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+    <option value="">Select Gender</option>
+    <option value="male" >Male</option>
+    <option value="female" >Female</option>
+    <option value="other" >Other</option>
+</select>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" rows="3" required></textarea>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" max="2024-12-31" value="{{ form.dob.value }}" required>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="form-group">
+                <label for="patient_pic">Profile Picture</label>
+                <input type="file" id="patient_pic" name="patient_pic" accept="image/*">
+                {% if form.instance.patient_pic %}
+                <div class="image-preview">
+                    <img src="{{ form.instance.patient_pic.url }}" alt="Current Image">
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Add Patient</button>
+                <a href="{% url 'admin_home' %}" class="btn secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+<script src="{% static 'js/main.js' %}"></script>
+  {% if messages %}
+    <script type="text/javascript">
+        window.onload = function() {
+            setTimeout(function() {
+                {% for message in messages %}
+                    alert("{{ message }}");
+                {% endfor %}
+            }, 100);
+        };
+    </script>
+{% endif %}
+</body>
+</html>

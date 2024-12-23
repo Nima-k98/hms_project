@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Prescription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 28px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        header img {
+            max-width: 80px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            margin-top: 10px;
+            font-size: 22px;
+        }
+
+        header p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .doctor-info {
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .details-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            width: 48%;
+            font-size: 14px;
+            color: black;
+        }
+
+        .details p {
+            margin: 5px 0;
+            color: black;
+        }
+
+        .details p strong {
+            font-weight: bold;
+            color: black;
+        }
+
+        .prescription-content {
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: black;
+        }
+
+        /* Media Queries for PDF Print */
+        @media print {
+            body {
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            p {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            header img {
+                max-width: 50px;
+                margin-bottom: 5px;
+            }
+
+            .details-wrapper {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .details {
+                width: 45%;
+            }
+
+            .footer {
+                margin-top: 50px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="{{ logo_url }}" alt="Hospital Logo" style="height: 60px; width: 70px;">
+            <h1>{{ hospital_name }}</h1>
+            <p>{{ hospital_address }}</p>
+        </header>
+
+        {% if doctor %}
+        <div class="doctor-info">
+            <p><strong>Dr. {{ doctor.doc_name }} - {{ doctor.qualification }} - ({{ doctor.department }})</strong></p>
+        </div>
+        {% endif %}
+
+        <div class="details-wrapper">
+            <div class="details">
+                <p><strong>Patient Name:</strong> {{ patient.patient_name }}</p>
+                <p><strong>Patient ID:</strong> {{ patient.patient_id }}</p>
+                <p><strong>Address:</strong> {{ patient.address }}</p>
+            </div>
+            <div class="details">
+                <p><strong>Date:</strong> {% now "d/m/y" %}</p>
+                <p><strong>Gender:</strong> {{ patient.gender|upper }}</p>
+                <p><strong>Age:</strong> {{ patient.age }} years</p>
+            </div>
+        </div>
+
+        <div class="prescription-content">
+            {% if medical_record.diagnosis %}
+            <div class="row">
+                <p><strong>Diagnosis:</strong></p>
+                <p>{{ medical_record.diagnosis }}</p>
+            </div>
+            {% endif %}
+
+            {% if medical_record.description %}
+            <div class="row">
+                <p><strong>Description:</strong></p>
+                <p>{{ medical_record.description }}</p>
+            </div>
+            {% endif %}
+
+            {% if medical_record.prescription %}
+            <div class="row">
+                <p><strong>Prescription:</strong></p>
+                <p>{{ medical_record.prescription }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing our hospital!</p>
+        </div>
+    </div>
+</body>
+</html>

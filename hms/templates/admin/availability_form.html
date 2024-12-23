@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Availability</title>
+    <link rel="stylesheet" href="{% static 'css/custom_form.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Availability for Dr. {{ doctor.doc_name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Day</label>
+            {{ form.day }}
+        </div>
+
+        <div class="form-group">
+            <label>Start Time</label>
+            {{ form.start_time }}
+        </div>
+
+        <div class="form-group">
+            <label>End Time</label>
+            {{ form.end_time }}
+        </div>
+
+        <div class="form-group">
+            <label>Consultation Fee</label>
+            {{ form.consultation_fee }}
+        </div>
+
+        <button type="submit" class="save-btn">{% if form.instance.pk %}Update{% else %}Add{% endif %}</button>
+        <br><br>
+        <a href="{% url 'doctor_availability' doctor.id %}" class="cancel-btn">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
