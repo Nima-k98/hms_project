@@ -81,7 +81,7 @@
     {% elif user.user_type == "3" %}
         <a class="cta-btn" href="{% url 'logout' %}">Logout</a>
         <div class="patient-info d-flex flex-column align-items-center" style="margin-left: 20px;">
-            <img src="{{ patient_details.patient_pic.url }}" alt="Profile Picture" class="profile-pic" style="height: 30px; width: 30px; border-radius: 50%; margin-bottom: 5px;">
+            <img src="{% if patient_details.patient_pic %}{{ patient_details.patient_pic.url }}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="{{ patient.patient_name }}" class="patient-pic" style="height: 30px; width: 30px; border-radius: 50%; margin-bottom: 5px;">
             <span style="font-size: 10px;">{{ patient_details.patient_name }}</span>
         </div>
     {% endif %}
